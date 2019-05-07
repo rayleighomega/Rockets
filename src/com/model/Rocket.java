@@ -1,4 +1,4 @@
-package com.rockets;
+package com.model;
 
 public class Rocket
 {
