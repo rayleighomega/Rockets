@@ -4,7 +4,7 @@ public class Rocket
 {
     private String code = "";
     private Integer engines;
-    private Double velocity = 0d;
+    private Float velocity = 0f;
 
     public Rocket(String code, Integer engines)
     {
@@ -32,12 +32,12 @@ public class Rocket
         this.engines = engines;
     }
 
-    public Double getVelocity()
+    public Float getVelocity()
     {
         return velocity;
     }
 
-    public void setVelocity(Double velocity)
+    public void setVelocity(Float velocity)
     {
         this.velocity = velocity;
     }

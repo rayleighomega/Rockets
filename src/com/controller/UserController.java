@@ -1,11 +1,10 @@
 package com.controller;
+import java.io.*;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.Scanner;
-
-public class UserController implements KeyListener, Runnable
+public class UserController implements Runnable
 {
+    InputStreamReader reader = new InputStreamReader(System.in);
+
     public UserController()
     {
 
@@ -16,36 +15,23 @@ public class UserController implements KeyListener, Runnable
         this.run();
     }
 
-    @Override
-    public void keyTyped(KeyEvent e)
-    {
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e)
-    {
-    }
-
-
-    @Override
-    public void keyReleased(KeyEvent e)
-    {
-    }
 
     @Override
     public void run()
     {
-        System.out.println("AA");
+
+        //int key = System.in.read();
+        //System.out.println((char)key);
+
         try
         {
-            Thread.sleep(10);
+            Thread.sleep(3000);
         }
         catch (Exception e)
         {
 
         }
-        System.out.println("AA");
 
-        this.run();
+        this.run(); //Endless loop
     }
 }
