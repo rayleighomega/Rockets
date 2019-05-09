@@ -17,50 +17,42 @@ public class RocketController
         rockets.add(new Rocket("32WESSDS", 3, rocket1Velocity));
         rockets.add(new Rocket("LDSFJA32", 6, rocket2Velocity));
 
+        //Set rockets power to 0
         this.updateRocket(1, 0);
         this.updateRocket(2, 0);
     }
 
     public void updateRocket(Integer rocketNumber, Integer rocketPower)
     {
-        Thread t = new Thread(() ->
-        {
-            System.out.println("Updating rocket");
-            rockets.get(rocketNumber).setPower(rocketPower);
-        });
-        t.start();
+
+        System.out.println("Updating rocket");
+        rockets.get(rocketNumber-1).setPower(rocketPower);
+
     }
 
-    public List<String>  getRocketsCodes()
+    public List<String> getRocketsCodes()
     {
         List<String> rocketsCodes = new ArrayList<>();
 
-        Thread t = new Thread(() ->
+        System.out.println("Get rocket code");
+        for (Rocket rocket:rockets)
         {
-            System.out.println("Get rocket code");
-            for (Rocket rocket:rockets)
-            {
-                rocketsCodes.add(rocket.getCode());
-            }
-        });
-        t.start();
+            rocketsCodes.add(rocket.getCode());
+        }
 
         return rocketsCodes;
+
     }
 
-    public List<Integer>  getRocketsEngines()
+    public List<Integer> getRocketsEngines()
     {
         List<Integer> rocketsEngines = new ArrayList<>();
 
-        Thread t = new Thread(() ->
+        System.out.println("Get rocket engines");
+        for (Rocket rocket:rockets)
         {
-            System.out.println("Get rocket engines");
-            for (Rocket rocket:rockets)
-            {
-                rocketsEngines.add(rocket.getEngines());
-            }
-        });
-        t.start();
+            rocketsEngines.add(rocket.getEngines());
+        }
 
         return rocketsEngines;
     }
@@ -69,15 +61,11 @@ public class RocketController
     {
         List<Float> rocketsVelocity = new ArrayList<>();
 
-        Thread t = new Thread(() ->
+        System.out.println("Get rocket velocity");
+        for (Rocket rocket:rockets)
         {
-            System.out.println("Get rocket velocity");
-            for (Rocket rocket:rockets)
-            {
-                rocketsVelocity.add(rocket.getVelocity());
-            }
-        });
-        t.start();
+            rocketsVelocity.add(rocket.getVelocity());
+        }
 
         return rocketsVelocity;
     }

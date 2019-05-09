@@ -47,7 +47,7 @@ public class View
         System.out.println(" ");
 
         System.out.println("Cohete 1: " + this.rocketsCodes.get(0) + "  " +
-                this.rocketsEngines.get(0) + " " + this.rocketsVelocity.get(0));
+                this.rocketsEngines.get(0).toString() + " " + this.rocketsVelocity.get(0).toString());
 
         System.out.println("Cohete 2: " + this.rocketsCodes.get(1) + "  " +
                 this.rocketsEngines.get(1) + " " + this.rocketsVelocity.get(1));

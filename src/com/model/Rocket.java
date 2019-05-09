@@ -41,7 +41,7 @@ public class Rocket
 
     public Float getVelocity()
     {
-        return velocity;
+        return this.velocity;
     }
 
     public void setVelocity(Float velocity)
