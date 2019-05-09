@@ -7,8 +7,8 @@ public class MainView
     public MainView()
     {
 
-        /*Render's side, endless loop for print the rockets status*/
-        Runnable renderThread = new RenderThread();
+        /*View's side, endless loop for print the rockets status*/
+        Runnable renderThread = new ViewThread();
 
         /*Start the threads*/
         new Thread(renderThread).start();

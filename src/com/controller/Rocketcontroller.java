@@ -1,68 +1,48 @@
 package com.controller;
 
 import com.model.Rocket;
-import com.view.UserControllerListener;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-public class RocketController implements UserControllerListener
+public class RocketController
 {
-    private List<String> rocketsCodes = new ArrayList<>();
-    private List<Integer> rocketsEngines = new ArrayList<>();
-    private List<Float> rocketsVelocity = new ArrayList<>();
+    private Callable<Rocket> rocket1;
+    private Callable<Rocket> rocket2;
 
-    private List<Rocket> rockets = new ArrayList<>();
+    Thread rocket1Thread;
+    Thread rocket2Thread;
 
-    public void RocketController()
+    private Float rocket1Velocity = 0f;
+    private Float rocket2Velocity = 0f;
+
+    public RocketController()
     {
-        //Create two rockets by default
-        rockets.add(createRocket("32WESSDS", 3));
-        rockets.add(createRocket("LDSFJA32", 6));
-
-        //Rocket status
-        rocketsCodes.add(rockets.get(0).getCode());
-        rocketsCodes.add(rockets.get(1).getCode());
-
-        rocketsEngines.add(rockets.get(0).getEngines());
-        rocketsEngines.add(rockets.get(1).getEngines());
-
-        rocketsVelocity.add(rockets.get(0).getVelocity());
-        rocketsVelocity.add(rockets.get(1).getVelocity());
+        this.connectRockets();
     }
 
-    public Rocket createRocket(String code, Integer engines)
+    public void connectRockets()
     {
-        return new Rocket(code, engines);
+        if(rocket1Thread.isAlive())
+        {
+            rocket1Thread.interrupt();
+        }
+        else
+        {
+            //Create two rockets by default
+            rocket1 = new Rocket("32WESSDS", 3, rocket1Velocity);
+            ExecutorService exec = Executors.newFixedThreadPool(3);
+            Future<Rocket> future = exec.submit(rocket1);
+        }
+
+
+        rocket2 = new Rocket("LDSFJA32", 6, rocket2Velocity);
+        rocket2Thread = new Thread(rocket2);
+        rocket2Thread.start();
+        rocket2Thread.setName("Rocket2");
     }
 
 
-    public List<String> getRocketsCodes()
-    {
-        return rocketsCodes;
-    }
-
-    public List<Integer> getRocketsEngines()
-    {
-        return rocketsEngines;
-    }
-
-    public List<Float> getRocketsVelocity()
-    {
-        return rocketsVelocity;
-    }
-
-    @Override
-    public Character UserInput(Integer rocketPower, Integer rocketNumber)
-    {
-        Rocket rocket = rockets.get(rocketNumber);
-        rockets.set(rocketNumber, rocket);
-        return null;
-    }
-
-    @Override
-    public Rocket GetRocket(Integer rocketNumber)
-    {
-        return rockets.get(rocketNumber);
-    }
 }
