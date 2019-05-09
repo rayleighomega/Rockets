@@ -1,11 +1,14 @@
 package com.rockets;
 
-import com.view.MainView;
+import com.view.View;
 
-public class Main {
+public class Main
+{
 
     public static void main(String[] args)
     {
-        MainView view = new MainView();
+        View view = new View();
+
+        view.draw();
     }
 }

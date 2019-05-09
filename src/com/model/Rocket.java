@@ -1,12 +1,11 @@
 package com.model;
 
-import java.util.concurrent.Callable;
-
-public class Rocket implements Callable<Rocket>
+public class Rocket
 {
     private String code = "";
     private Integer engines;
     private Float velocity = 0f;
+    private Integer power = 0;
 
     public Rocket(String code, Integer engines, Float velocity)
     {
@@ -15,27 +14,9 @@ public class Rocket implements Callable<Rocket>
         this.setVelocity(velocity);
     }
 
-    @Override
-    public Rocket call() throws Exception
+    public void setPower(Integer power)
     {
-        try
-        {
-            while (!Thread.currentThread().isInterrupted()) {
-                System.out.println("Flying");
-                Thread.sleep(1000);
-            }
-            throw new InterruptedException();
-
-        }
-        catch (InterruptedException e) {
-            return this;
-        }
-    }
-
-    private void launch()
-    {
-
-
+        this.power = power;
     }
 
     public String getCode()
