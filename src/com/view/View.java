@@ -11,6 +11,7 @@ public class View
     private List<String> rocketsCodes = new ArrayList<>();
     private List<Integer> rocketsEngines = new ArrayList<>();
     private List<Double> rocketsVelocity = new ArrayList<>();
+    private List<Integer> rocketsPower = new ArrayList<>();
 
     private RocketController rocketController;  //Should be declared as a field to share between threads
 
@@ -33,6 +34,7 @@ public class View
         rocketsCodes = rocketController.getRocketsCodes();
         rocketsEngines = rocketController.getRocketsEngines();
         rocketsVelocity = rocketController.getRocketsVelocity();
+        rocketsPower = rocketController.getRocketPower();
     }
 
 
@@ -47,11 +49,13 @@ public class View
             System.out.println("--------------------------------");
             System.out.println(" ");
 
-            System.out.println("Cohete 1: " + this.rocketsCodes.get(0) + "  " +
-                    this.rocketsEngines.get(0).toString() + " " + this.rocketsVelocity.get(0).toString());
+            System.out.println("Cohete 1 ||| Code: " + this.rocketsCodes.get(0) + "| Engines: " +
+                    this.rocketsEngines.get(0).toString() + "| Current Power: " + this.rocketsPower.get(0) + "| Velocity: "
+                    + this.rocketsVelocity.get(0).toString());
 
-            System.out.println("Cohete 2: " + this.rocketsCodes.get(1) + "  " +
-                    this.rocketsEngines.get(1) + " " + this.rocketsVelocity.get(1));
+            System.out.println("Cohete 2 ||| Code: " + this.rocketsCodes.get(1) + "| Engines: " +
+                    this.rocketsEngines.get(1).toString() + "| Current Power: " + this.rocketsPower.get(1) + "| Velocity: "
+                    + this.rocketsVelocity.get(1).toString());
 
             System.out.println(" ");
             System.out.println("--------------------------------");
@@ -80,6 +84,7 @@ public class View
 
             rocketController.updateRocket(rocketNumber, action);
             rocketsVelocity = rocketController.getRocketsVelocity();
+            rocketsPower = rocketController.getRocketPower();
 
         }
 

@@ -9,10 +9,6 @@ import java.util.concurrent.*;
 
 public class RocketController
 {
-    //Initial values
-    private Float rocket1Velocity = 0f;
-    private Float rocket2Velocity = 0f;
-
     private List<Rocket> rockets = new ArrayList<>();
 
     public RocketController()
@@ -38,19 +34,20 @@ public class RocketController
     public void updateRocket(Integer rocketNumber, String action)
     {
         Rocket rocket = rockets.get(rocketNumber-1);
+        Double velocity;
 
         try
         {
             switch (action)
             {
                 case "SpeedUp" :
-                    rocket = rocket.speedUp();
-                    rocket.updateVelocity();
-                    System.out.println(rocket.velocity);
+                    velocity = rocket.powerUp();
                     this.rockets.set(rocketNumber-1, rocket);
+                    System.out.println(rocket.getEnginesPower());
                     break;
                 case "SpeedDown" :
-                    rocket = rocket.speedDown();
+                    velocity = rocket.powerDown();
+                    System.out.println(rocket.getEnginesPower());
                     this.rockets.set(rocketNumber-1, rocket);
             }
         }
@@ -99,6 +96,19 @@ public class RocketController
         }
 
         return rocketsVelocity;
+    }
+
+    public List<Integer> getRocketPower()
+    {
+        List<Integer> rocketsPower = new ArrayList<>();
+
+        System.out.println("Get rocket velocity");
+        for (Rocket rocket:rockets)
+        {
+            rocketsPower.add(rocket.getEnginesPower());
+        }
+
+        return rocketsPower;
     }
 
 }

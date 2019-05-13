@@ -2,12 +2,14 @@ package com.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.*;
 
 public class Rocket
 {
     private String code = "";
-    public Double velocity = 55d;
+    private Double velocity = 0d;
+    private Integer enginesPower = 0;
 
     private List<Engine> engines = new ArrayList<>();
 
@@ -16,119 +18,69 @@ public class Rocket
         this.setCode(pCode);
     }
 
-    public Rocket speedUp()
+    public Double powerUp() throws Exception
     {
+        Integer enginesPower = 0;
+
         System.out.println("Updating rocket");
 
-        List<Future<Boolean>> futures = new ArrayList<>();
+        List<Future<Integer>> futures = new ArrayList<>();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Boolean flagDone = true;
 
         for (Engine engine:engines)
         {
-            //Update rocket in a new thread
-            Callable<Boolean> t = () ->
-            {
-                engine.increasePower();
-
-                return true;
-            };
+            //Update each rocket in a new thread. Could have different response time for power updating
+            Callable<Integer> t = engine::increasePower;
             futures.add(executorService.submit(t));
         }
 
-        Integer counterDone = 0;
-        while (flagDone) //Waits for all the threads
+        for (Future<Integer> future : futures)
         {
-            for (Future<Boolean> future : futures)
-            {
-                Boolean flagFuture = future.isDone();
-                if (!flagFuture)
-                {
-                    flagDone = false;
-                }
-                else
-                {
-                    counterDone++;
-                }
-
-            }
-
-            if (counterDone == futures.size())
-            {
-                flagDone = false;
-            }
+            enginesPower += future.get(); //The exception is thrown by the method
         }
 
         executorService.shutdown();
 
-        Integer enginesPower = 0;
-        for (Engine engine: engines)
-        {
-            enginesPower += engine.enginePower;
-        }
-
-        //Double enginesPowerF = (double)enginesPower;
+        Double enginesPowerF = (double)enginesPower;
         System.out.println(velocity);
-        //this.setVelocity(this.velocity + 100 * Math.sqrt(enginesPowerF));
+        this.setVelocity(this.velocity + 100 * Math.sqrt(enginesPowerF));
 
         System.out.println("Rocket updated");
 
-        return this;
+        this.setEnginesPower(enginesPower);
+        return this.velocity;
     }
 
-    public Rocket speedDown() throws InterruptedException, ExecutionException
+    public Double powerDown() throws InterruptedException, ExecutionException
     {
+        Integer enginesPower = 0;
+
         System.out.println("Updating rocket");
 
-        List<Future<Boolean>> futures = new ArrayList<>();
+        List<Future<Integer>> futures = new ArrayList<>();
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Boolean flagDone = false;
 
         for (Engine engine:engines)
         {
-            //Update rocket in a new thread
-            Callable<Boolean> t = () ->
-            {
-                engine.decreasePower();
-
-                return true;
-            };
+            //Update each rocket in a new thread. Could have different response time for power updating
+            Callable<Integer> t = engine::decreasePower;
             futures.add(executorService.submit(t));
         }
 
-        while (flagDone) //Waits for all the threads
+        for (Future<Integer> future : futures) //Using future.get the run can wait the results from the callable
         {
-            for (Future<Boolean> future : futures)
-            {
-                if (!future.isDone())
-                    flagDone = true;
-            }
+            enginesPower += future.get(); //The exception is thrown by the method
         }
 
-        Integer enginesPower = 0;
-        for (Engine engine: engines)
-        {
-            enginesPower += engine.enginePower;
-        }
+        executorService.shutdown();
 
         Double enginesPowerF = (double)enginesPower;
+        System.out.println(velocity);
         this.setVelocity(this.velocity + 100 * Math.sqrt(enginesPowerF));
 
         System.out.println("Rocket updated");
-
-        return this;
-    }
-
-    public void updateVelocity()
-    {
-        Integer enginesPower = 0;
-        for (Engine engine: engines)
-        {
-            enginesPower += engine.enginePower;
-        }
-
-        Double enginesPowerF = (double)enginesPower;
-        this.setVelocity(this.velocity + 100 * Math.sqrt(enginesPowerF));
+        this.setEnginesPower(enginesPower);
+        return this.velocity;
     }
 
     public void newEngine(Integer engineMaxPower)
@@ -161,6 +113,16 @@ public class Rocket
         this.velocity = pVelocity;
     }
 
+    public Integer getEnginesPower()
+    {
+        return enginesPower;
+    }
+
+    public void setEnginesPower(Integer enginesPower)
+    {
+        this.enginesPower = enginesPower;
+    }
+
     public class Engine
     {
         Integer engineMaxPower;
@@ -171,7 +133,7 @@ public class Rocket
             engineMaxPower = pEngineMaxPower;
         }
 
-        public Boolean increasePower()
+        public Integer increasePower() throws Exception
         {
             if(engineMaxPower - enginePower > 0)
             {
@@ -182,10 +144,11 @@ public class Rocket
                 enginePower = engineMaxPower; //Engine reach the maximum power
             }
 
-            return true;
+            Thread.sleep((int)(Math.random()*1000));
+            return enginePower;
         }
 
-        public Boolean decreasePower()
+        public Integer decreasePower() throws Exception
         {
 
             if(enginePower - 10 > 0)
@@ -197,8 +160,8 @@ public class Rocket
                 enginePower = 0; //Engine reach the minimum power
             }
 
-
-            return true;
+            Thread.sleep((int)(Math.random()*1000));
+            return enginePower;
         }
 
 
