@@ -9,6 +9,6 @@ public class Main
     {
         View view = new View();
 
-        view.draw();
+        view.main();
     }
 }

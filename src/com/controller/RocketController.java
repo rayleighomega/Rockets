@@ -3,10 +3,13 @@ package com.controller;
 import com.model.Rocket;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.*;
 
 public class RocketController
 {
+    //Initial values
     private Float rocket1Velocity = 0f;
     private Float rocket2Velocity = 0f;
 
@@ -14,19 +17,47 @@ public class RocketController
 
     public RocketController()
     {
-        rockets.add(new Rocket("32WESSDS", 3, rocket1Velocity));
-        rockets.add(new Rocket("LDSFJA32", 6, rocket2Velocity));
+        //Initial values for two rockets
+        Rocket rocket;
+        rocket = new Rocket("32WESSDS");
+        rocket.newEngine(10);
+        rocket.newEngine(20);
+        rocket.newEngine(30);
+        this.rockets.add(rocket);
+        rocket = new Rocket("LDSFJA32");
+        rocket.newEngine(10);
+        rocket.newEngine(20);
+        rocket.newEngine(30);
+        rocket.newEngine(40);
+        rocket.newEngine(50);
+        rocket.newEngine(60);
+        this.rockets.add(rocket);
 
-        //Set rockets power to 0
-        this.updateRocket(1, 0);
-        this.updateRocket(2, 0);
     }
 
-    public void updateRocket(Integer rocketNumber, Integer rocketPower)
+    public void updateRocket(Integer rocketNumber, String action)
     {
+        Rocket rocket = rockets.get(rocketNumber-1);
 
-        System.out.println("Updating rocket");
-        rockets.get(rocketNumber-1).setPower(rocketPower);
+        try
+        {
+            switch (action)
+            {
+                case "SpeedUp" :
+                    rocket = rocket.speedUp();
+                    rocket.updateVelocity();
+                    System.out.println(rocket.velocity);
+                    this.rockets.set(rocketNumber-1, rocket);
+                    break;
+                case "SpeedDown" :
+                    rocket = rocket.speedDown();
+                    this.rockets.set(rocketNumber-1, rocket);
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error");
+        }
 
     }
 
@@ -57,9 +88,9 @@ public class RocketController
         return rocketsEngines;
     }
 
-    public List<Float> getRocketsVelocity()
+    public List<Double> getRocketsVelocity()
     {
-        List<Float> rocketsVelocity = new ArrayList<>();
+        List<Double> rocketsVelocity = new ArrayList<>();
 
         System.out.println("Get rocket velocity");
         for (Rocket rocket:rockets)
